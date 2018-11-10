@@ -1,2 +1,11 @@
-
+**/nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 .DS_Store
+*.xml
+*.mf
+*.properties
+*.form
