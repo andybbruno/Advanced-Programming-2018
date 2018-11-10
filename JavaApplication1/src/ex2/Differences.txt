@@ -1,0 +1,61 @@
+class StrangeOne {
+  int b0;
+
+  int b1;
+
+  StrangeOne();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: aload_0
+       5: bipush        42
+       7: putfield      #2                  // Field b0:I
+      10: aload_0
+      11: bipush        42
+      13: putfield      #3                  // Field b1:I
+      16: return
+
+  int sum();
+    Code:
+       0: aload_0
+       1: getfield      #2                  // Field b0:I
+       4: aload_0
+       5: getfield      #3                  // Field b1:I
+       8: iadd
+       9: ireturn
+}
+
+
+
+
+
+class StrangeTwo {
+  byte b0;
+
+  byte b1;
+
+  StrangeTwo();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: aload_0
+       5: bipush        42
+       7: putfield      #2                  // Field b0:B
+      10: aload_0
+      11: bipush        42
+      13: putfield      #3                  // Field b1:B
+      16: return
+
+  int sum();
+    Code:
+       0: aload_0
+       1: getfield      #2                  // Field b0:B
+       4: aload_0
+       5: getfield      #3                  // Field b1:B
+       8: iadd
+       9: ireturn
+}
+
+
+
+Although they've got the same number of instructions, the most important thing is that the sum uses the same invocation method both in case of sum two integers and in sum two bytes. This because Java (for a design choice) does not have support for byte, char and short, in fact it uses int as “computational type”.
