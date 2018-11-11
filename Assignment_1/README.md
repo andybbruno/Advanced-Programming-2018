@@ -29,3 +29,7 @@ in order to distinguish exercise 1 to exercise 3.
 ![alt text](https://raw.githubusercontent.com/andybbruno/Advanced-Programming-2018/master/Assignment_1/UML/ex3.png)
 
 In addiction to all the logic implemented whitin Exercise 1, we were asked to implement constraint properties exploiting _VetoableChangeListener_. In my project, I chose to let _Controller3_ play the role of vetoing, because this class contains all the application logic. Hence, in order to respect MVC pattern, it hasn't been possible to develop required functionalities inside other classes.
+
+
+
+### To download all NetBeans files and projects, please download [ReadyToUse](https://github.com/andybbruno/Advanced-Programming-2018/blob/master/Assignment_1/ReadyToUse.zip) file.
