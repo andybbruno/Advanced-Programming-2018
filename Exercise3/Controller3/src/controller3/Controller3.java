@@ -1,4 +1,4 @@
-package controller;
+package controller3;
 
 import java.beans.*;
 
@@ -9,7 +9,7 @@ import java.beans.*;
  *
  * @author Andrea Bruno 585457
  */
-public class Controller implements PropertyChangeListener {
+public class Controller3 implements PropertyChangeListener {
 
     private final int HUM_UPPER_BOUND = 90;
     private final int HUM_LOWER_BOUND = 30;
@@ -26,7 +26,7 @@ public class Controller implements PropertyChangeListener {
     /**
      * Void constructor
      */
-    public Controller() {
+    public Controller3() {
 
     }
 

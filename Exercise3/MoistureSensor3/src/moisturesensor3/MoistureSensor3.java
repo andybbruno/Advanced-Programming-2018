@@ -1,4 +1,4 @@
-package moisturesensor;
+package moisturesensor3;
 
 import java.beans.*;
 import java.util.Timer;
@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author Andrea Bruno 585457
  */
-public class MoistureSensor {
+public class MoistureSensor3 {
 
     private final int UPPER_BOUND = 100;
     private final int LOWER_BOUND = 0;
@@ -30,7 +30,7 @@ public class MoistureSensor {
      * The default constructor initialize the sensor and activates it. Once it
      * is active, it start "sensing" the humidity.
      */
-    public MoistureSensor() {
+    public MoistureSensor3() {
         start();
     }
 
