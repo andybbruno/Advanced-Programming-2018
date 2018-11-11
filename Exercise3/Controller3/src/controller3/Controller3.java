@@ -9,7 +9,7 @@ import java.beans.*;
  *
  * @author Andrea Bruno 585457
  */
-public class Controller3 implements PropertyChangeListener {
+public class Controller3 implements VetoableChangeListener {
 
     private final int HUM_UPPER_BOUND = 90;
     private final int HUM_LOWER_BOUND = 30;
@@ -18,7 +18,7 @@ public class Controller3 implements PropertyChangeListener {
      * {@code changes} manage a list of listeners and dispatches
      * {@link PropertyChangeEvent} to them.
      */
-    private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
+    private final VetoableChangeSupport changes = new VetoableChangeSupport(this);
 
     private boolean on;
     private int locHumidity;
@@ -33,19 +33,19 @@ public class Controller3 implements PropertyChangeListener {
     /**
      * Start irrigation and fire a property change
      */
-    private void startIrrigation() {
+    private void startIrrigation() throws PropertyVetoException {
         boolean old = this.on;
         this.on = true;
-        changes.firePropertyChange("on", old, this.on);
+        changes.fireVetoableChange("on", old, this.on);
     }
 
     /**
      * Stop irrigation and fire a property change
      */
-    private void stopIrrigation() {
+    private void stopIrrigation() throws PropertyVetoException {
         boolean old = this.on;
         this.on = false;
-        changes.firePropertyChange("on", old, this.on);
+        changes.fireVetoableChange("on", old, this.on);
     }
 
     /**
@@ -58,21 +58,21 @@ public class Controller3 implements PropertyChangeListener {
     }
 
     /**
-     * Add a {@code PropertyChangeListener} to the listener list.
+     * Add a {@code VetoableChangeListener} to the listener list.
      *
-     * @param listener The {@code PropertyChangeListener} to be added
+     * @param listener The {@code VetoableChangeListener} to be added
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changes.addPropertyChangeListener(listener);
+    public void addVetoableChangeListener(VetoableChangeListener listener) {
+        changes.addVetoableChangeListener(listener);
     }
 
     /**
-     * Remove a {@code PropertyChangeListener} from the listener list.
+     * Remove a {@code VetoableChangeListener} from the listener list.
      *
-     * @param listener The {@code PropertyChangeListener} to be removed
+     * @param listener The {@code VetoableChangeListener} to be removed
      */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changes.removePropertyChangeListener(listener);
+    public void removeVetoableChangeListener(VetoableChangeListener listener) {
+        changes.removeVetoableChangeListener(listener);
     }
 
     /**
@@ -80,9 +80,10 @@ public class Controller3 implements PropertyChangeListener {
      *
      * @param event this object describe the event source and the property that
      * has changed.
+     * @throws PropertyVetoException
      */
     @Override
-    public void propertyChange(PropertyChangeEvent event) {
+    public void vetoableChange(PropertyChangeEvent event) throws PropertyVetoException {
 
         if (event.getPropertyName().equals("currentHumidity")) {
             int oldHum = locHumidity;
@@ -94,14 +95,14 @@ public class Controller3 implements PropertyChangeListener {
             if (locHumidity > HUM_UPPER_BOUND) {
                 stopIrrigation();
             }
-            changes.firePropertyChange("locHumidity", oldHum, locHumidity);
+            changes.fireVetoableChange("locHumidity", oldHum, locHumidity);
         }
 
         if (event.getPropertyName().equals("decreasing")) {
             boolean oldVal = (boolean) event.getOldValue();
             boolean newVal = (boolean) event.getNewValue();
 
-            changes.firePropertyChange("decreased", oldVal, newVal);
+            changes.fireVetoableChange("decreased", oldVal, newVal);
         }
 
     }

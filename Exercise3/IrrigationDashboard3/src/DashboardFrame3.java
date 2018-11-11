@@ -1,15 +1,20 @@
 
-
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 
 /**
- * This class create a dashboard where the all the information given from the sensor are shown.
- * It implements {@code PropertyChangeListener} interface in order to be update if
- * any of the bounded properties update. 
+ * 
+ * This class create a dashboard where the all the information given from the
+ * sensor are shown. It implements {@code VetoableChangeListener} interface in
+ * order to be update if any of the bounded properties update.
+ * 
+ * IMPORTANT MESSAGE:  I've added a char '3' both on class names and package names
+ *                     in order to distinguish exercise 1 to exercise 3.
+ *
  * @author Andrea Bruno 585457
  */
-public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChangeListener {
+public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChangeListener {
 
     private boolean first_click = true;
 
@@ -22,8 +27,6 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
      *
      *
      */
-    
-    
     /**
      * Initialize all components
      */
@@ -42,7 +45,6 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
 
         cntrl = new controller3.Controller3();
         msens = new moisturesensor3.MoistureSensor3();
-        jDialog1 = new javax.swing.JDialog();
         cuurentHumidityLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -50,17 +52,6 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
         decreasingLabel = new javax.swing.JLabel();
         decreasingLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-
-        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
-        jDialog1.getContentPane().setLayout(jDialog1Layout);
-        jDialog1Layout.setHorizontalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        jDialog1Layout.setVerticalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,7 +83,7 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cuurentHumidityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(240, Short.MAX_VALUE))
+                        .addContainerGap(190, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -101,7 +92,7 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(decreasingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -141,7 +132,6 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
     private javax.swing.JLabel decreasingLabel;
     private javax.swing.JLabel decreasingLabel1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -192,9 +182,6 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
      *
      *
      */
-    
-    
-    
     /**
      * If the button is pressed, then launch {@code setup()}
      */
@@ -216,11 +203,11 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
      */
     private void setup() {
         //bound MoistureSensor3 to Controller3
-        msens.addPropertyChangeListener(cntrl);
+        msens.addVetoableChangeListener(cntrl);
 
         //bound DashboardFrame3 to Controller3
-        cntrl.addPropertyChangeListener(this);
-        
+        cntrl.addVetoableChangeListener(this);
+
         //loading message
         jLabel1.setText("...loading");
         jLabel2.setText("...loading");
@@ -228,15 +215,16 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
     }
 
     /**
-     * This method gets called when a bound property is changed. In details, it
+     * This method gets called when a bound property is changed.In details, it
      * updates all the text labels within the dashboard with the parameters
      * given from the event.
      *
      * @param event this object describe the event source and the property that
      * has changed.
+     * @throws PropertyVetoException is thrown when a proposed change to a property represents an unacceptable value.
      */
     @Override
-    public void propertyChange(PropertyChangeEvent event) {
+    public void vetoableChange(PropertyChangeEvent event) throws PropertyVetoException {
 
         if (event.getPropertyName().equals("locHumidity")) {
             jLabel1.setText(event.getNewValue().toString());
@@ -249,5 +237,7 @@ public class DashboardFrame3 extends javax.swing.JFrame implements PropertyChang
         if (event.getPropertyName().equals("on")) {
             jLabel3.setText(event.getNewValue().toString());
         }
+        
+        //throw new PropertyVetoException("Action Forbidden!" , event);
     }
 }

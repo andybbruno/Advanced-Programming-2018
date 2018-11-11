@@ -21,7 +21,7 @@ public class MoistureSensor3 {
      * {@code changes} manage a list of listeners and dispatches
      * {@link PropertyChangeEvent} to them.
      */
-    private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
+    private final VetoableChangeSupport changes = new VetoableChangeSupport(this);
 
     private boolean decreasing;
     private int currentHumidity = 1;
@@ -64,7 +64,7 @@ public class MoistureSensor3 {
      * order to update the listeners that have been registered to keep track of
      * those property
      */
-    private void setHumidity() {
+    private void setHumidity() throws PropertyVetoException {
 
         int oldHumidity = currentHumidity;
         boolean oldDecreasing = decreasing;
@@ -78,27 +78,27 @@ public class MoistureSensor3 {
             currentHumidity = Math.abs((currentHumidity + tmp) % UPPER_BOUND);
         }
 
-        changes.firePropertyChange("decreasing", oldDecreasing, decreasing);
-        changes.firePropertyChange("currentHumidity", oldHumidity, currentHumidity);
+        changes.fireVetoableChange("decreasing", oldDecreasing, decreasing);
+        changes.fireVetoableChange("currentHumidity", oldHumidity, currentHumidity);
 
     }
 
     /**
-     * Add a {@code PropertyChangeListener} to the listener list.
+     * Add a {@code VetoableChangeListener} to the listener list.
      *
-     * @param listener The {@code PropertyChangeListener} to be added
+     * @param listener The {@code VetoableChangeListener} to be added
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changes.addPropertyChangeListener(listener);
+    public void addVetoableChangeListener(VetoableChangeListener listener) {
+        changes.addVetoableChangeListener(listener);
     }
 
     /**
-     * Remove a {@code PropertyChangeListener} from the listener list.
+     * Remove a {@code VetoableChangeListener} from the listener list.
      *
-     * @param listener The {@code PropertyChangeListener} to be removed
+     * @param listener The {@code VetoableChangeListener} to be removed
      */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changes.removePropertyChangeListener(listener);
+    public void removeVetoableChangeListener(VetoableChangeListener listener) {
+        changes.removeVetoableChangeListener(listener);
     }
 
     /**
@@ -110,7 +110,11 @@ public class MoistureSensor3 {
 
         @Override
         public void run() {
-            setHumidity();
+            try {
+                setHumidity();
+            } catch (PropertyVetoException ex) {
+                 System.err.println("Action Forbidden! --> event:" + ex.getMessage());
+            }
         }
     }
 }
