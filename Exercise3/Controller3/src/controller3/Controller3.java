@@ -16,6 +16,8 @@ public class Controller3 implements VetoableChangeListener {
 
     private final int HUM_UPPER_BOUND = 90;
     private final int HUM_LOWER_BOUND = 30;
+    private final int MANUAL_LOWER_BOUND = 50;
+    private final int MANUAL_UPPER_BOUND = 60;
     private boolean on;
     private int locHumidity;
 
@@ -115,7 +117,7 @@ public class Controller3 implements VetoableChangeListener {
             boolean newVal = (boolean) event.getNewValue();
 
             if (newVal == true) {
-                if (locHumidity < 60) {
+                if (locHumidity < MANUAL_UPPER_BOUND) {
                     changes.fireVetoableChange("on", oldVal, newVal);
                     this.on = newVal;
                 } else {
@@ -125,7 +127,7 @@ public class Controller3 implements VetoableChangeListener {
             }
 
             if (newVal == false) {
-                if (locHumidity > 50) {
+                if (locHumidity > MANUAL_LOWER_BOUND) {
                     changes.fireVetoableChange("on", oldVal, newVal);
                     this.on = newVal;
                 } else {
