@@ -2,21 +2,29 @@
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.beans.VetoableChangeSupport;
 
 /**
- * 
+ *
  * This class create a dashboard where the all the information given from the
  * sensor are shown. It implements {@code VetoableChangeListener} interface in
  * order to be update if any of the bounded properties update.
- * 
- * IMPORTANT MESSAGE:  I've added a char '3' both on class names and package names
- *                     in order to distinguish exercise 1 to exercise 3.
+ *
+ * IMPORTANT MESSAGE: I've added a char '3' both on class names and package
+ * names in order to distinguish exercise 1 to exercise 3.
  *
  * @author Andrea Bruno 585457
  */
 public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChangeListener {
 
     private boolean first_click = true;
+    private boolean on;
+    
+    /**
+     * {@code changes} manage a list of listeners and dispatches
+     * {@link PropertyChangeEvent} to them.
+     */
+    private final VetoableChangeSupport changes = new VetoableChangeSupport(this);
 
     /**
      *
@@ -52,6 +60,7 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
         decreasingLabel = new javax.swing.JLabel();
         decreasingLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -60,6 +69,9 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
         cuurentHumidityLabel.setToolTipText("");
 
         jButton1.setText("Read Sensor");
+        jButton1.setMaximumSize(new java.awt.Dimension(150, 29));
+        jButton1.setMinimumSize(new java.awt.Dimension(150, 29));
+        jButton1.setPreferredSize(new java.awt.Dimension(150, 29));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -74,6 +86,16 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
         decreasingLabel1.setText("Irrigation");
         decreasingLabel1.setToolTipText("");
 
+        jButton2.setText("Manual Irrigation");
+        jButton2.setMaximumSize(new java.awt.Dimension(150, 29));
+        jButton2.setMinimumSize(new java.awt.Dimension(150, 29));
+        jButton2.setPreferredSize(new java.awt.Dimension(150, 29));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,26 +103,19 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cuurentHumidityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(190, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(decreasingLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(decreasingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(60, 60, 60))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(158, 158, 158)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(decreasingLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cuurentHumidityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(decreasingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,9 +132,11 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(decreasingLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addComponent(jButton1)
-                .addGap(14, 14, 14))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -132,6 +149,7 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
     private javax.swing.JLabel decreasingLabel;
     private javax.swing.JLabel decreasingLabel1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -182,6 +200,9 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
      *
      *
      */
+
+    
+    
     /**
      * If the button is pressed, then launch {@code setup()}
      */
@@ -195,6 +216,18 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    
+    /**
+     * When the button is pressed it starts the irrigation
+     */
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            changes.fireVetoableChange("manual", this.on, !this.on);
+        } catch (PropertyVetoException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * This method links the MoistureSensor3 to the Controller3 and the
      * DashboardFrame3 to the Controller3. In this way, there's no communication
@@ -207,6 +240,9 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
 
         //bound DashboardFrame3 to Controller3
         cntrl.addVetoableChangeListener(this);
+        
+        //bound DashboardFrame3 to Controller3 in order to keep track of the events generated by the manual irrigation
+        this.addVetoableChangeListener(cntrl);
 
         //loading message
         jLabel1.setText("...loading");
@@ -214,6 +250,26 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
         jLabel3.setText("...loading");
     }
 
+    
+    /**
+     * Add a {@code VetoableChangeListener} to the listener list.
+     *
+     * @param listener The {@code VetoableChangeListener} to be added
+     */
+    public void addVetoableChangeListener(VetoableChangeListener listener) {
+        changes.addVetoableChangeListener(listener);
+    }
+
+    /**
+     * Remove a {@code VetoableChangeListener} from the listener list.
+     *
+     * @param listener The {@code VetoableChangeListener} to be removed
+     */
+    public void removeVetoableChangeListener(VetoableChangeListener listener) {
+        changes.removeVetoableChangeListener(listener);
+    }
+    
+    
     /**
      * This method gets called when a bound property is changed.In details, it
      * updates all the text labels within the dashboard with the parameters
@@ -221,7 +277,8 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
      *
      * @param event this object describe the event source and the property that
      * has changed.
-     * @throws PropertyVetoException is thrown when a proposed change to a property represents an unacceptable value.
+     * @throws PropertyVetoException is thrown when a proposed change to a
+     * property represents an unacceptable value.
      */
     @Override
     public void vetoableChange(PropertyChangeEvent event) throws PropertyVetoException {
@@ -235,9 +292,8 @@ public class DashboardFrame3 extends javax.swing.JFrame implements VetoableChang
         }
 
         if (event.getPropertyName().equals("on")) {
-            jLabel3.setText(event.getNewValue().toString());
+            this.on = (boolean) event.getNewValue();
+            jLabel3.setText(this.on+"");
         }
-        
-        //throw new PropertyVetoException("Action Forbidden!" , event);
     }
 }

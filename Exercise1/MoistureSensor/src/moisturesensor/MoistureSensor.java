@@ -78,8 +78,8 @@ public class MoistureSensor {
             currentHumidity = Math.abs((currentHumidity + tmp) % UPPER_BOUND);
         }
 
-        changes.firePropertyChange("decreasing", oldDecreasing, decreasing);
         changes.firePropertyChange("currentHumidity", oldHumidity, currentHumidity);
+        changes.firePropertyChange("decreasing", oldDecreasing, decreasing);
 
     }
 

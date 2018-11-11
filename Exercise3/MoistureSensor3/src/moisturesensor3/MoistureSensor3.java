@@ -77,9 +77,9 @@ public class MoistureSensor3 {
         } else if ((!decreasing) && (currentHumidity < UPPER_BOUND)) {
             currentHumidity = Math.abs((currentHumidity + tmp) % UPPER_BOUND);
         }
-
-        changes.fireVetoableChange("decreasing", oldDecreasing, decreasing);
+        
         changes.fireVetoableChange("currentHumidity", oldHumidity, currentHumidity);
+        changes.fireVetoableChange("decreasing", oldDecreasing, decreasing);
 
     }
 

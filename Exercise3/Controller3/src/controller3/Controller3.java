@@ -5,7 +5,10 @@ import java.beans.*;
 /**
  * This class contains the irrigation logic. In particular, this class
  * implements {@code PropertyChangeListener} interface in order to be update if
- * any of the bounded properties update.
+ * any of the bounded properties update. This class play the role of vetoing the
+ * change.
+ *
+ * @see #vetoableChange(PropertyChangeEvent event)
  *
  * @author Andrea Bruno 585457
  */
@@ -80,7 +83,8 @@ public class Controller3 implements VetoableChangeListener {
      *
      * @param event this object describe the event source and the property that
      * has changed.
-     * @throws PropertyVetoException
+     * @throws PropertyVetoException is thrown when a proposed change to a
+     * property represents an unacceptable value.
      */
     @Override
     public void vetoableChange(PropertyChangeEvent event) throws PropertyVetoException {
@@ -105,5 +109,34 @@ public class Controller3 implements VetoableChangeListener {
             changes.fireVetoableChange("decreased", oldVal, newVal);
         }
 
+        //In this section is checked if all the conditions needed by the requirements are satisfied.
+        //If one of them is not satisfied, then a PropertyVetoException is thrown.
+        if (event.getPropertyName().equals("manual")) {
+            boolean oldVal = (boolean) event.getOldValue();
+            boolean newVal = (boolean) event.getNewValue();
+
+            if (newVal == true) {
+                if (locHumidity < 60) {
+                    changes.fireVetoableChange("on", oldVal, newVal);
+                    this.on = newVal;
+                } else {
+                    String message = "Action Forbidden! ---> Local humidity larger than 60%";
+                    throw new PropertyVetoException(message, event);
+                }
+            }
+            
+            if (newVal == false) {
+                if (locHumidity > 50) {
+                    changes.fireVetoableChange("on", oldVal, newVal);
+                    this.on = newVal;
+                } else {
+                    String message = "Action Forbidden! ---> Local humidity smaller than 50%";
+                    throw new PropertyVetoException(message, event);
+                }
+            }
+
+            //throw new PropertyVetoException("Action Forbidden!" , event);
+        }
     }
+
 }

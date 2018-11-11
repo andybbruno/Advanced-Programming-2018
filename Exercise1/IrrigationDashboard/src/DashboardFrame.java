@@ -63,6 +63,7 @@ public class DashboardFrame extends javax.swing.JFrame implements PropertyChange
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         cuurentHumidityLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         cuurentHumidityLabel.setText("Current Humidity");
