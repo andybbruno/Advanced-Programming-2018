@@ -19,7 +19,7 @@ public class MoistureSensor3 {
 
     /**
      * {@code changes} manage a list of listeners and dispatches
-     * {@link PropertyChangeEvent} to them.
+     * {@link VetoableChangeSupport} to them.
      */
     private final VetoableChangeSupport changes = new VetoableChangeSupport(this);
 

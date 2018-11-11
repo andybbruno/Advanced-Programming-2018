@@ -4,7 +4,7 @@ import java.beans.*;
 
 /**
  * This class contains the irrigation logic. In particular, this class
- * implements {@code PropertyChangeListener} interface in order to be update if
+ * implements {@code VetoableChangeListener} interface in order to be update if
  * any of the bounded properties update. This class play the role of vetoing the
  * change.
  *
@@ -16,15 +16,14 @@ public class Controller3 implements VetoableChangeListener {
 
     private final int HUM_UPPER_BOUND = 90;
     private final int HUM_LOWER_BOUND = 30;
+    private boolean on;
+    private int locHumidity;
 
     /**
      * {@code changes} manage a list of listeners and dispatches
-     * {@link PropertyChangeEvent} to them.
+     * {@link VetoableChangeSupport} to them.
      */
     private final VetoableChangeSupport changes = new VetoableChangeSupport(this);
-
-    private boolean on;
-    private int locHumidity;
 
     /**
      * Void constructor
@@ -124,7 +123,7 @@ public class Controller3 implements VetoableChangeListener {
                     throw new PropertyVetoException(message, event);
                 }
             }
-            
+
             if (newVal == false) {
                 if (locHumidity > 50) {
                     changes.fireVetoableChange("on", oldVal, newVal);
@@ -134,8 +133,6 @@ public class Controller3 implements VetoableChangeListener {
                     throw new PropertyVetoException(message, event);
                 }
             }
-
-            //throw new PropertyVetoException("Action Forbidden!" , event);
         }
     }
 
