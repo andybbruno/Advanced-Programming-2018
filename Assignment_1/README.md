@@ -12,7 +12,8 @@ The system is composed by:
 The communication between the classes is done through events. In order to be able to exchange messages, we need to have someone who talks and some who is listening. In this project, _Controller_ and _DashboardFrame_ extends [PropertyChangeListener](https://bit.ly/1zKkJb3), an interface who permits to _"listen"_ if any bounded property updates, whereas the _"speaker"_ is implemented through [PropertyChangeSupport](https://bit.ly/2FgPq5I) and its _"firePropertyChange"_ method. Moreover, as the image suggests, the MVC pattern has been respected.
 
 ## Exercise 2
-* [CheckNPE](https://bit.ly/2JTuy2T)
+* [CheckNPE](https://bit.ly/2JTuy2T) 
+
 ![alt text](https://raw.githubusercontent.com/andybbruno/Advanced-Programming-2018/master/Assignment_1/UML/ex2.png)
 
 Given an array of Java classes names, [CheckNPE](https://bit.ly/2z1khxy) check if those classes are NPE sensible i.e., if invoking a constructor or a method with default parameter values, a _NullPointerException_ is thrown. In particular, the default value of a numeric primitive type parameter is _0_, of a boolean parameter is _false_, of a reference type parameter is _null_.
