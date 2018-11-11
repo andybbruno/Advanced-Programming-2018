@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 
 /**
- * Given an array of Java classes names this class check if this class is NPE sensible
+ * Given an array of Java classes names this class check if those classes are NPE sensible
  * i.e., if invoking a constructor or a method with default parameter values a {@code NullPointerException} is thrown.
  * In particular, the default value of a numeric primitive type parameter is 0, 
  * of a boolean parameter is false, of a reference type parameter is null.
