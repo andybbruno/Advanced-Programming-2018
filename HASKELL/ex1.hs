@@ -1,8 +1,8 @@
 {-
 
 Write a function myReplicate that given an integer n and a value v returns a list of length n initialized with v, namely all elements are equal to v.
-
-Expected output: Two implementations of myReplicate: one recursive and one using the combinators map, filter, foldl/r.
+Goal: Warming up!
+Expected output: Two implementations of myReplicate: one recursive and one using the combinators map, filter, foldl/r from the Haskell Prelude.
 
 -}
 
