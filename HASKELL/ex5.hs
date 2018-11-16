@@ -8,16 +8,16 @@ Expected output: Two implementations of filterOdd: one recursive and one using t
 -}
 
 oddpos [] = []
-oddpos x = if length x > 1 then head x : oddpos (tail(tail x)) else x 
+oddpos x = if length x > 1 then head x : oddpos (tail(tail x)) else x
 
 
-{- NOT WORKING
-oddpos [] = []
-oddpos a = map (\(x,y) -> if odd x then y else ' ') (zip [1 .. length a] a)
--}
+oddpos' [] = []
+oddpos' (x:[]) = [x]
+oddpos' (x:y:xs) = x : oddpos(xs)
 
 {-
 	TRY: 
-	let a = [1,2,3,1,2,3]
+	let a = [1..50]
 	oddpos a
+	oddpos' a
 -}
