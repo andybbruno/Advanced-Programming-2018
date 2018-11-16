@@ -7,10 +7,14 @@ Expected output: Two implementations of filterOdd: one recursive and one using t
 
 -}
 
-
 oddpos [] = []
-oddpos (x:xs) = if even (length xs) then x : oddpos xs else oddpos xs
+oddpos x = if length x > 1 then head x : oddpos (tail(tail x)) else x 
 
+
+{- NOT WORKING
+oddpos [] = []
+oddpos a = map (\(x,y) -> if odd x then y else ' ') (zip [1 .. length a] a)
+-}
 
 {-
 	TRY: 
