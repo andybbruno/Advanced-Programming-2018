@@ -14,9 +14,10 @@ myReplicate' n v = map (const v) [1 .. n]
 myReplicate'' n v = filter (\x -> x==v) [1 .. n]
 
 {-
-	TRY:
-	myReplicate 2 4
-	myReplicate' 2 4
-	myReplicate'' 2 4
+
+TRY:
+myReplicate 2 4
+myReplicate' 2 4
+myReplicate'' 2 4
 
 -}

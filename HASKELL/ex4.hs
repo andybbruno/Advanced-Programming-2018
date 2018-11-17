@@ -12,8 +12,8 @@ totalLength (x:xs) = if (x !! 0 == 'a') then (length x + totalLength' xs) else t
 totalLength' xs = foldl (+) 0 (map length ([x | x <- xs , x !! 0 == 'a']))
 
 {-
-	TRY:
-	let a = ["a", "aaa", "acdca" ,"baaa" ,"caa"]
-	totalLength a
-	totalLength' a
+TRY:
+let a = ["a", "aaa", "acdca" ,"baaa" ,"caa"]
+totalLength a
+totalLength' a
 -}

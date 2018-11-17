@@ -16,8 +16,10 @@ oddpos' (x:[]) = [x]
 oddpos' (x:y:xs) = x : oddpos(xs)
 
 {-
-	TRY: 
-	let a = [1..50]
-	oddpos a
-	oddpos' a
+
+TRY: 
+let a = [1..50]
+oddpos a
+oddpos' a
+
 -}
