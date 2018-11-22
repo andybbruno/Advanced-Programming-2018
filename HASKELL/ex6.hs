@@ -9,7 +9,7 @@ Expected output: Two implementations of titlecase: one recursive and one using t
 
 import Data.Char
 
-titlecase' x = map (\y -> toUpper (y!!0) : tail y) x
+titlecase x = map (\y -> toUpper (y!!0) : tail y) x
 
 
 {-
