@@ -11,16 +11,12 @@ Expected output: A file containing the three required functions.
 -}
 
 
-:{
-
 data IntTree = Leaf Int | Node (Int, IntTree, IntTree)
 
 
 tmap f a = case a of 
     Leaf a -> [f a]
     Node (a,b,c) -> [f a] ++ tmap f b ++ tmap f c
-
-:}
 
 
 

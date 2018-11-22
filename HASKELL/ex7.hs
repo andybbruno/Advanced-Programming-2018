@@ -9,8 +9,6 @@ Expected output: Two implementations of countVowelPali: one recursive and one us
 
 import Data.List
 
-:{
-
 pal s = s == reverse s
 vowels xs = map (\y -> length [ x | x <- y , x `elem` ['a','e','i','o','u']]) xs
  
@@ -24,12 +22,14 @@ countVowelPali' (x:xs) = if pal x
     then length [ a | a <- x , a `elem` ['a','e','i','o','u']] + countVowelPali' xs
     else countVowelPali' xs
 
-:}
 
 
 {-
 
 TRY:
 
+countVowelPali ["anna", "banana", "civic", "mouse"]
+
+countVowelPali' ["anna", "banana", "civic", "mouse"]
 
 -}

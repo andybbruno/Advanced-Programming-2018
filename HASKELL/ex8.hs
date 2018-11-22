@@ -6,13 +6,11 @@ Expected output: A file containing the required implementation of the map combin
 
 -}
 
-:{
 
 myMap f [] = []
 
 myMap f (x:xs) = foldl (++) [] ([f x] : [myMap f xs])
 
-:}
 
 {-
 Apply the ++ which combines two lists, starting from [],
