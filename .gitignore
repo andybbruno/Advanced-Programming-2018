@@ -5,3 +5,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+*.xml
+*.mf
+*.properties
