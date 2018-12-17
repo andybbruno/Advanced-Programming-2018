@@ -11,8 +11,6 @@ myReplicate n v = v : (myReplicate (n-1) v)
 
 myReplicate' n v = map (const v) [1 .. n]
 
-myReplicate'' n v = filter (\x -> x==v) [1 .. n]
-
 {-
 
 TRY:
