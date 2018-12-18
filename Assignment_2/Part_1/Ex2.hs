@@ -24,10 +24,21 @@ import Ex1 (
    sumBag )
 
 
+
+-- Create an istance of Foldable by implementing the foldr.
+-- Basically the foldr over a ListBag is made by applying 
+-- recursively (from left to right) the function f, 
+-- starting from z, at each first component of the tuples in the ListBag. 
 instance Foldable ListBag where
    foldr f z (LB []) = z
    foldr f z (LB bag) = foldr f z (fst (unzip bag))
 
+
+-- mapLB applies f at each element of ListBag, 
+-- and returns a ListBag containing the results of each step.
+-- For instance: 
+-- Prelude> mapLB odd (LB([(1,2),(3,1),(4,2),(8,1)]))
+-- LB [(True,3),(False,3)]
 mapLB :: Eq b => (a -> b) -> ListBag a -> ListBag b
 mapLB f bag = fromList (map f (toList bag))
 
