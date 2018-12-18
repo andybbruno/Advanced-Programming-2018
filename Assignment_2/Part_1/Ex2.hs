@@ -13,13 +13,22 @@ module Ex2
 ) 
 where
 
-import Ex1
+import Ex1 (
+   ListBag(LB),
+   empty,
+   singleton,
+   fromList,
+   isEmpty,
+   mul,
+   toList,
+   sumBag )
+
 
 instance Foldable ListBag where
    foldr f z (LB []) = z
    foldr f z (LB bag) = foldr f z (fst (unzip bag))
 
-
+mapLB :: Eq b => (a -> b) -> ListBag a -> ListBag b
 mapLB f bag = fromList (map f (toList bag))
 
 
@@ -37,9 +46,8 @@ mapLB f bag = fromList (map f (toList bag))
 	and I have a box of apples (f a), then I can get a box of blueberries (f b). >>
 
 
-	The mapLB has type:
-	    mapLB :: Eq a1 => (a2 -> a1) -> ListBag a2 -> ListBag a1
-	Because of Eq, in order to compare two items, they must be of the same type.
+	Our mapLB has type:
+	    mapLB :: Eq b => (a -> b) -> ListBag a -> ListBag b
 	So we can't create an "fmap" as Functor requires.
 -}
    

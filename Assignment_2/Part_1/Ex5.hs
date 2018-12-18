@@ -16,7 +16,7 @@ returnLB (LB a) =
       a -> Just (LB a)
 
 
-bindLB g (LB y) = 
-    case y of
-        [] -> Nothing
-        Just (LB y) -> g y
+-- bindLB g (LB y) = 
+--     case y of
+--         [] -> Nothing
+--         Just (LB y) -> g y
