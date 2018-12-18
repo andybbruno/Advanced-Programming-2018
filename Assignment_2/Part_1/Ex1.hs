@@ -1,6 +1,8 @@
 {-
 	http://pages.di.unipi.it/corradini/Didattica/AP-18/PROG-ASS/02//assignment2.html
 	Exercise 1: Constructors and operations
+  
+  @author Andrea Bruno 585457
 -}
 
 
