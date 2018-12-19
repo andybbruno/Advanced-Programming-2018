@@ -9,14 +9,25 @@ import Ex1
 import Ex2
 
 
-returnLB :: ListBag a -> Maybe (ListBag a)
-returnLB (LB a) = 
-   case a of
-      [] -> Nothing
-      a -> Just (LB a)
+
+returnLB :: Eq a => [(a, Int)] -> Maybe (ListBag a)
+returnLB x = case x of
+   []   -> Nothing
+   _    -> if wf(LB (x)) == True then Just (LB (x)) else Nothing
 
 
--- bindLB g (LB y) = 
---     case y of
---         [] -> Nothing
---         Just (LB y) -> g y
+
+-- START TEST --
+{-
+
+-- Nothing --
+returnLB []
+
+-- Nothing --
+returnLB [(1,3),(2,5),(3,-1)]
+
+-- Just --
+returnLB [(1,3),(2,5)]
+
+
+-}

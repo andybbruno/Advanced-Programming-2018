@@ -31,8 +31,9 @@ isUnique (x:xs) = x `notElem` xs && isUnique xs
 
 
 -- wf applies 'isUnique' to all the first elements of the 'ListBag'
+-- and checks if there are multiplicity less than 1 
 wf :: Eq a => ListBag a -> Bool
-wf (LB bag) = isUnique (fst (unzip bag))
+wf (LB bag) = isUnique (fst (unzip bag)) && (not (any (<1) (snd (unzip bag))))
 
 
 -- an empty ListBag
