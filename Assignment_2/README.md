@@ -156,6 +156,7 @@ and I have a box of apples (f a), then I can get a box of blueberries (f b)._
 
 Our *mapLB* has type:
 ```Haskell
-    mapLB :: Eq a1 => (a2 -> a1) -> ListBag a2 -> ListBag a1
+    mapLB :: Eq b => (a -> b) -> ListBag a -> ListBag b
 ``` 
-So we can't create an "fmap" as *Functor* requires.
+Basically, we get ListBag and we return another ListBag.
+So it's completely different from the "fmap" that *Functor* requires.
