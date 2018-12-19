@@ -158,5 +158,6 @@ Our *mapLB* has type:
 ```Haskell
     mapLB :: Eq b => (a -> b) -> ListBag a -> ListBag b
 ``` 
-Basically, we get ListBag and we return another ListBag.
+Basically, we get a *ListBag* and we return another *ListBag*.
+
 So it's completely different from the "fmap" that *Functor* requires.
