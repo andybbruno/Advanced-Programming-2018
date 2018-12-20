@@ -402,36 +402,7 @@ public class WinnerOperations {
 
 # Exercise 5
 ## Multisets as Monad (Optional)
-I tried to solve the optional exercises as well. Although I'm not sure about the correctness, I publish what I understood from the requirements.
-
-```Haskell
-
-import Ex1
-import Ex2
 
 
-
-returnLB :: Eq a => [(a, Int)] -> Maybe (ListBag a)
-returnLB x = case x of
-   []   -> Nothing
-   _    -> if wf(LB (x)) == True then Just (LB (x)) else Nothing
-
-
-
--- START TEST --
-{-
-
--- Nothing --
-returnLB []
-
--- Nothing --
-returnLB [(1,3),(2,5),(3,-1)]
-
--- Just --
-returnLB [(1,3),(2,5)]
-
-
--}
-```
-
-
+# Exercise 6
+## Abstract Data Type (Optional)
