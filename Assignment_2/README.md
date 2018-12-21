@@ -403,6 +403,31 @@ public class WinnerOperations {
 # Exercise 5
 ## Multisets as Monad (Optional)
 
+>Try to define an instance of Monad for ListBag using the functions just defined. Discuss whether this is possible or not, and if not what conditions have to 
+be released in order to obtain an instance of Monad.
+
+
+
+```Haskell
+import Ex1
+import Ex2
+
+
+
+
+newEmpty = LB []
+
+returnLB :: a -> ListBag a
+returnLB x = singleton x
+
+bindLB :: Eq a1 => ListBag a2 -> (a2 -> ListBag a1) -> ListBag a1
+bindLB a f = foldr sumBag newEmpty (map f (toList a))
+
+
+-- instance Monad ListBag where
+-- return = returnLB
+-- (>>=) = bindLB
+```
 
 # Exercise 6
 ## Abstract Data Type (Optional)

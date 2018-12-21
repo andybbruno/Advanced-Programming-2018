@@ -8,18 +8,40 @@
 import Ex1
 import Ex2
 
+import Test.HUnit
+import Data.List
 
 
-
-newEmpty = LB []
 
 returnLB :: a -> ListBag a
 returnLB x = singleton x
 
 bindLB :: Eq a1 => ListBag a2 -> (a2 -> ListBag a1) -> ListBag a1
-bindLB a f = foldr sumBag newEmpty (map f (toList a))
+bindLB a f = foldr sumBag (LB []) (map f (toList a))
 
 
 -- instance Monad ListBag where
 -- return = returnLB
 -- (>>=) = bindLB
+
+
+testreturnLB = TestCase $ assertBool "test 1" (wf (returnLB 'a'))
+
+testreturnLB_2 = TestCase $ assertEqual "test 2" (toList (returnLB 42)) ([42])
+
+testbindLB = TestCase $ assertEqual "test 3" (toList (bindLB (singleton 1) (\x -> singleton (x+1)))) [2]
+
+testbindLB_2 = TestCase $ assertEqual "test 4" (toList (bindLB (fromList "ciao") (\x -> singleton ('a')))) "aaa"
+
+
+testlist = TestList [
+                     TestLabel "testreturnLB" testreturnLB,
+                     TestLabel "testreturnLB_2" testreturnLB_2,
+                     TestLabel "testbindLB" testbindLB,
+                     TestLabel "testbindLB_2" testbindLB_2
+                     ]
+-- Main
+main :: IO ()
+main = do
+  runTestTT testlist
+  return ()
