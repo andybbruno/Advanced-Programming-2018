@@ -10,24 +10,16 @@ import Ex2
 
 
 
-returnLB :: Eq a => [(a, Int)] -> Maybe (ListBag a)
-returnLB x = case x of
-   []   -> Nothing
-   _    -> if wf(LB (x)) == True then Just (LB (x)) else Nothing
+
+newEmpty = LB []
+
+returnLB :: a -> ListBag a
+returnLB x = singleton x
+
+bindLB :: Eq a1 => ListBag a2 -> (a2 -> ListBag a1) -> ListBag a1
+bindLB a f = foldr sumBag newEmpty (map f (toList a))
 
 
-
--- START TEST --
-{-
-
--- Nothing --
-returnLB []
-
--- Nothing --
-returnLB [(1,3),(2,5),(3,-1)]
-
--- Just --
-returnLB [(1,3),(2,5)]
-
-
--}
+-- instance Monad ListBag where
+-- return = returnLB
+-- (>>=) = bindLB

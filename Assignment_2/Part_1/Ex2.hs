@@ -59,6 +59,6 @@ mapLB f bag = fromList (map f (toList bag))
 
 	Our mapLB has type:
 	    mapLB :: Eq b => (a -> b) -> ListBag a -> ListBag b
-	So we can't create an "fmap" as Functor requires.
+	So, because of the Eq constrain, we can't create an "fmap" as Functor requires.
 -}
    
