@@ -161,7 +161,7 @@ Our *mapLB* has type:
 ``` 
 Basically, we get a *ListBag* and we return another *ListBag*.
 
-So it's completely different from the "fmap" that *Functor* requires.
+So, because of the Eq constrain, we can't create an "fmap" as *Functor* requires.
 
 
 # Exercise 3 
@@ -403,30 +403,103 @@ public class WinnerOperations {
 # Exercise 5
 ## Multisets as Monad (Optional)
 
->Try to define an instance of Monad for ListBag using the functions just defined. Discuss whether this is possible or not, and if not what conditions have to be released in order to obtain an instance of Monad.
-
-
 
 ```Haskell
+module Ex5
+(
+    returnLB,
+    bindLB
+) 
+where
+
 import Ex1
 import Ex2
 
+import Test.HUnit
+import Data.List
 
 
-
-newEmpty = LB []
 
 returnLB :: a -> ListBag a
 returnLB x = singleton x
 
 bindLB :: Eq a1 => ListBag a2 -> (a2 -> ListBag a1) -> ListBag a1
-bindLB a f = foldr sumBag newEmpty (map f (toList a))
+bindLB a f = foldr sumBag (LB []) (map f (toList a))
 
 
 -- instance Monad ListBag where
 -- return = returnLB
 -- (>>=) = bindLB
+
+
+testreturnLB = TestCase $ assertBool "test 1" (wf (returnLB 'a'))
+
+testreturnLB_2 = TestCase $ assertEqual "test 2" (toList (returnLB 42)) ([42])
+
+testbindLB = TestCase $ assertEqual "test 3" (toList (bindLB (singleton 1) (\x -> singleton (x+1)))) [2]
+
+testbindLB_2 = TestCase $ assertEqual "test 4" (toList (bindLB (fromList "ciao") (\x -> singleton ('a')))) "aaaa"
+
+
+testlist = TestList [
+                     TestLabel "testreturnLB" testreturnLB,
+                     TestLabel "testreturnLB_2" testreturnLB_2,
+                     TestLabel "testbindLB" testbindLB,
+                     TestLabel "testbindLB_2" testbindLB_2
+                     ]
+-- Main
+main :: IO ()
+main = do
+  runTestTT testlist
+  return ()
 ```
+
+>Try to define an instance of Monad for ListBag using the functions just defined. Discuss whether this is possible or not, and if not what conditions have to be released in order to obtain an instance of Monad.
+
+To instanciate a Monad, Haskell requires two methods called *return* and *bind* (>>=):
+```Haskell
+return :: (Monad m) => a -> m a
+
+(>>=) :: (Monad m) => m a -> (a -> m b) -> m b
+```
+
+The *return* method takes any element of any type, and gives back a "container" with that element in it.
+
+*Bind*, instead, takes a Monadic type (m a) and a function of type (a -> m b). It simply maps this function over the container, and then, it joins all the results togheter to get a new container (m b).
+
+
+```Haskell
+instance Monad ListBag where
+return = returnLB
+(>>=) = bindLB
+```
+The code up here, cannot be executed because every Monad should be a Functor as well. 
+
+<p align="center"> 
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Base-classes.svg/510px-Base-classes.svg.png" width="40%">
+</p>
+
+So, to hold this hierarchy, we must implement another method called *fmap*. But as we've already seen into exercise 2, because of the Eq constrain, we wasn't able to create a Functor instance. So again, we're stucked within these "walls" imposed by Haskell.
+
+A possible solution, is to avoid the Eq constrain into the declaration of *ListBag*.
+We must pass from this representation:
+```Haskell
+data ListBag a = LB [(a, Int)] deriving (Show, Eq)
+```
+to its base representation, that is lists of elements. The following code is a possible solution:
+```Haskell
+data ListBag a = LB[a] deriving (Show, Eq)
+```
+
+**References:**
+<ul>
+  <li>
+    <a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html">Functors, Applicatives, And Monads In Pictures</a>
+  </li>
+  <li>
+    <a href="https://wiki.haskell.org/Monads_as_containers">Monads as containers</a>
+  </li>
+</ul>
 
 # Exercise 6
 ## Abstract Data Type (Optional)
