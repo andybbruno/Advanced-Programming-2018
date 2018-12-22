@@ -454,7 +454,7 @@ main = do
   return ()
 ```
 
->Try to define an instance of Monad for ListBag using the functions just defined. Discuss whether this is possible or not, and if not what conditions have to be released in order to obtain an instance of Monad.
+>**_Try to define an instance of Monad for ListBag using the functions just defined. Discuss whether this is possible or not, and if not what conditions have to be released in order to obtain an instance of Monad._**
 
 To instanciate a Monad, Haskell requires two methods called *return* and *bind* (>>=):
 ```Haskell
