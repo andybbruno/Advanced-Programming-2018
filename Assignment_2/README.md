@@ -403,8 +403,7 @@ public class WinnerOperations {
 # Exercise 5
 ## Multisets as Monad (Optional)
 
->Try to define an instance of Monad for ListBag using the functions just defined. Discuss whether this is possible or not, and if not what conditions have to 
-be released in order to obtain an instance of Monad.
+>Try to define an instance of Monad for ListBag using the functions just defined. Discuss whether this is possible or not, and if not what conditions have to be released in order to obtain an instance of Monad.
 
 
 

@@ -31,7 +31,7 @@ testreturnLB_2 = TestCase $ assertEqual "test 2" (toList (returnLB 42)) ([42])
 
 testbindLB = TestCase $ assertEqual "test 3" (toList (bindLB (singleton 1) (\x -> singleton (x+1)))) [2]
 
-testbindLB_2 = TestCase $ assertEqual "test 4" (toList (bindLB (fromList "ciao") (\x -> singleton ('a')))) "aaa"
+testbindLB_2 = TestCase $ assertEqual "test 4" (toList (bindLB (fromList "ciao") (\x -> singleton ('a')))) "aaaa"
 
 
 testlist = TestList [
