@@ -5,6 +5,13 @@
 	@author Andrea Bruno 585457
 -}
 
+module Ex5
+(
+    returnLB,
+    bindLB
+) 
+where
+
 import Ex1
 import Ex2
 
