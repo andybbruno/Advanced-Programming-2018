@@ -19,10 +19,13 @@ import Test.HUnit
 import Data.List
 
 
-
+-- returnLB wraps every element into a ListBag
+-- by applying the singleton function
 returnLB :: a -> ListBag a
 returnLB x = singleton x
 
+
+-- Map f on each element of a, and then join the intermediate results using sumBag
 bindLB :: Eq a1 => ListBag a2 -> (a2 -> ListBag a1) -> ListBag a1
 bindLB a f = foldr sumBag (LB []) (map f (toList a))
 

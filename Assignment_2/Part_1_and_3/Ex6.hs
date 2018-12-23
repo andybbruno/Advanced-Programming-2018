@@ -5,7 +5,16 @@
 	@author Andrea Bruno 585457
 -}
 
+module Ex6
+(
+    bindMulti,
+    applMulti,
+    fun
+) 
+where
+
 import qualified Ex1
+import qualified Ex2
 import Data.List
 import Test.HUnit
 
@@ -39,13 +48,41 @@ now becomes [1,1,2,3,3,3,3]
 
 data Multi ms = MS [ms] deriving (Show, Eq)
 
+-- return an empty list
+emptyMS :: Multi ms
 emptyMS = MS []
+
+
+-- return a wrapped data
+singletonMS :: ms -> Multi ms
 singletonMS ms2 = MS[ms2]
+
+
+-- givin a list, return a Multi
+fromListMS :: [ms] -> Multi ms
 fromListMS ms2 = MS(ms2)
+
+
+-- check wheter a Multi is empty 
+isEmptyMS :: Eq ms => Multi ms -> Bool
 isEmptyMS (MS ms2) = ms2 == []
+
+
+-- given an element 'v' and a Multi, 
+-- it returns the muliplicty of the element 'v' wihitin the Multi
+mulMS :: Eq a => a -> Multi a -> Int
 mulMS v (MS ms2) = length (filter (\x -> (x==v)) ms2)
+
+
+-- given a Mutli, return its list representation
+toListMS :: Multi ms -> [ms]
 toListMS (MS ms2) = ms2
+
+
+-- given two Multi it merges them in a single Multi.
+sumBagMS :: Multi ms -> Multi ms -> Multi ms
 sumBagMS (MS a) (MS b) = MS(a ++ b)
+
 
 
 instance MultiSet Multi where
@@ -59,11 +96,13 @@ instance MultiSet Multi where
 
 
 
+-- Map f on each element of a, and then join the intermediate results using sumBag
 bindMulti :: Multi a -> (a -> Multi ms) -> Multi ms
 bindMulti a f = foldr sumBagMS (MS[]) (map f (toListMS a))
 
 
-
+-- given a function and a Multi, its output is the result of applying this function to the value,
+-- rewrapped into another Mutli 
 applMulti :: Multi (a1 -> a2) -> Multi a1 -> Multi a2
 applMulti (MS []) b = emptyMS
 applMulti (MS (f:fx)) (MS b) = sumBagMS (MS (map f b)) (applMulti (MS fx) (MS b))
@@ -84,6 +123,7 @@ instance Monad Multi where
     (>>=)  = bindMulti
 
 
+-- A simple function
 fun :: (MultiSet ms, Eq a)  => ms a -> [a]
 fun a = toList(sumBag a a)
 
