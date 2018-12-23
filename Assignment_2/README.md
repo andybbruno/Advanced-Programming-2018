@@ -505,8 +505,7 @@ data ListBag a = LB[a] deriving (Show, Eq)
 ## Abstract Data Type (Optional)
 > Consider abstract data types as defined here, and in particular in Section 3.1. The goal of this exercise is to re-engineer the definition of ListBag of Exercise 1 and Exercise 2 as specific instances of an Abstract Data Type Constructor called MultiSet.
 
-> 1. Define a new constructor class MultiSet defining an abstract data type with the same constructors and operations as ListBag
-> 2. Make ListBag an instance of MultiSet
+> **1. Define a new constructor class MultiSet defining an abstract data type with the same constructors and operations as ListBag**
 
 ```Haskell
 import qualified Ex1
@@ -522,8 +521,11 @@ class MultiSet m where
     mul :: Eq a => a -> m a -> Int
     toList :: m a -> [a]
     sumBag :: Eq a => m a -> m a -> m a
+```
 
+> **2. Make ListBag an instance of MultiSet**
 
+```Haskell
 instance MultiSet Ex1.ListBag where
     empty = Ex1.empty
     singleton = Ex1.singleton
@@ -535,7 +537,7 @@ instance MultiSet Ex1.ListBag where
 
 ```
 
-> 3. Provide a second, different instance of MultiSet, by either exploiting a new concrete representation of multisets or by reusing some data structure provided by the Haskell API.
+> **3. Provide a second, different instance of MultiSet, by either exploiting a new concrete representation of multisets or by reusing some data structure provided by the Haskell API.**
 
 ```Haskell
 {-
@@ -592,7 +594,7 @@ instance Monad Multi where
     (>>=)  = bindMulti
 ```
 
-> 4. Write a simple function manipulating Multiset, and show that it can be applied to both implementations._
+> **4. Write a simple function manipulating Multiset, and show that it can be applied to both implementations.**
 
 ```Haskell
 fun :: (MultiSet ms, Eq a)  => ms a -> [a]
