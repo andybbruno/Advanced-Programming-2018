@@ -405,6 +405,7 @@ public class WinnerOperations {
 
 
 ```Haskell
+
 module Ex5
 (
     returnLB,
@@ -419,10 +420,13 @@ import Test.HUnit
 import Data.List
 
 
-
+-- returnLB wraps every element into a ListBag
+-- by applying the singleton function
 returnLB :: a -> ListBag a
 returnLB x = singleton x
 
+
+-- Map f on each element of a, and then join the intermediate results using sumBag
 bindLB :: Eq a1 => ListBag a2 -> (a2 -> ListBag a1) -> ListBag a1
 bindLB a f = foldr sumBag (LB []) (map f (toList a))
 
@@ -451,7 +455,7 @@ testlist = TestList [
 main :: IO ()
 main = do
   runTestTT testlist
-  return ()
+  return ()v
 ```
 
 >**_Try to define an instance of Monad for ListBag using the functions just defined. Discuss whether this is possible or not, and if not what conditions have to be released in order to obtain an instance of Monad._**
@@ -508,6 +512,7 @@ data ListBag a = LB[a] deriving (Show, Eq)
 > **1. Define a new constructor class MultiSet defining an abstract data type with the same constructors and operations as ListBag**
 
 ```Haskell
+
 import qualified Ex1
 import Data.List
 import Test.HUnit
@@ -549,13 +554,41 @@ now becomes [1,1,2,3,3,3,3]
 
 data Multi ms = MS [ms] deriving (Show, Eq)
 
+-- return an empty list
+emptyMS :: Multi ms
 emptyMS = MS []
+
+
+-- return a wrapped data
+singletonMS :: ms -> Multi ms
 singletonMS ms2 = MS[ms2]
+
+
+-- givin a list, return a Multi
+fromListMS :: [ms] -> Multi ms
 fromListMS ms2 = MS(ms2)
+
+
+-- check wheter a Multi is empty 
+isEmptyMS :: Eq ms => Multi ms -> Bool
 isEmptyMS (MS ms2) = ms2 == []
+
+
+-- given an element 'v' and a Multi, 
+-- it returns the muliplicty of the element 'v' wihitin the Multi
+mulMS :: Eq a => a -> Multi a -> Int
 mulMS v (MS ms2) = length (filter (\x -> (x==v)) ms2)
+
+
+-- given a Mutli, return its list representation
+toListMS :: Multi ms -> [ms]
 toListMS (MS ms2) = ms2
+
+
+-- given two Multi it merges them in a single Multi.
+sumBagMS :: Multi ms -> Multi ms -> Multi ms
 sumBagMS (MS a) (MS b) = MS(a ++ b)
+
 
 
 instance MultiSet Multi where
@@ -569,11 +602,13 @@ instance MultiSet Multi where
 
 
 
+-- Map f on each element of a, and then join the intermediate results using sumBag
 bindMulti :: Multi a -> (a -> Multi ms) -> Multi ms
 bindMulti a f = foldr sumBagMS (MS[]) (map f (toListMS a))
 
 
-
+-- given a function and a Multi, its output is the result of applying this function to the value,
+-- rewrapped into another Mutli 
 applMulti :: Multi (a1 -> a2) -> Multi a1 -> Multi a2
 applMulti (MS []) b = emptyMS
 applMulti (MS (f:fx)) (MS b) = sumBagMS (MS (map f b)) (applMulti (MS fx) (MS b))
@@ -597,6 +632,7 @@ instance Monad Multi where
 > **4. Write a simple function manipulating Multiset, and show that it can be applied to both implementations.**
 
 ```Haskell
+-- A simple function
 fun :: (MultiSet ms, Eq a)  => ms a -> [a]
 fun a = toList(sumBag a a)
 
