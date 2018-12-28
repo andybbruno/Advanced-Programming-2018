@@ -3,7 +3,6 @@ import os
 
 logging.basicConfig(level=logging.INFO)
 
-# abs_path = '/Users/andrea/Desktop/TEST'
 FROM_EXTEN = ".raj"
 TO_EXTEN = ".jar"
 
@@ -12,11 +11,14 @@ def raj2jar(path):
 
     errors = 0
     success = 0
+    index = 0
 
     # The method walk() generates the file names in a directory tree
     # by walking the tree either top-down (DEFAULT) or bottom-up.
     for subdir, dirs, files in os.walk(path):
         for file in files:
+            index += 1
+
             # endswith() returns True if the string ends with the specified suffix
             if file.endswith(FROM_EXTEN):
 
@@ -31,13 +33,12 @@ def raj2jar(path):
                 try:
                     os.rename(from_path, to_path)
                     success += 1
+                    logging.info("\nSUCCESSFULLY UPDATED" + from_path)
                 except:
                     errors += 1
-                    logging.info("\nFROM: " + from_path + "\n TO: " +
-                                 to_path + "\t ERROR!!!")
+                    logging.info("\nERROR WHILE RENAMING " + from_path)
 
-    logging.info("\n"+ str(errors) + " errors and " +
-                 str(success) + " successfully updated files!")
-
-
-# raj2jar(abs_path)
+    
+    # Final message
+    logging.info("\nraj2jar ended with error rate = " +
+                 str(errors / index) + "%")
