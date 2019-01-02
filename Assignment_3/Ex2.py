@@ -7,7 +7,18 @@ EXT = (".jar", ".hs", ".py")
 
 
 def collect_sources(root, source):
-    logging.info("####  collect_sources ####\n\n")
+    """ 
+    given a 'root' folder path, this function search into every subdirectory
+    if there is any file with extension .java, .hs or .py. Then it save the 
+    results into a file in position 'source'.
+    For example: collect_sources('C:\\Users\\Fake' , 'results.txt').
+
+        :param root: a path in which this function should search
+        :param source: the destination path in which this function should save those results
+    """
+
+    logging.info("\n\n####  START ----> collect_sources ####\n\n")
+
     try:
         # Create a list of path
         path_list = []
@@ -38,6 +49,9 @@ def collect_sources(root, source):
             source_file.writelines(path_list)
             logging.info("FILE SUCCESSFULLY CREATED!\n")
         else:
-            logging.info("NO FILES FOUND WITH THESE EXTENSIONS " + str(EXT) + "\n")
+            logging.info(
+                "NO FILES FOUND WITH THESE EXTENSIONS " + str(EXT) + "\n")
     except:
         logging.info("SOMETHING WENT WRONG!\n")
+
+    logging.info("\n\n####  END ----> collect_sources ####\n\n")

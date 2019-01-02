@@ -14,8 +14,13 @@ regex = r"package+.+[;]"
 
 
 def rebuild_packages(root):
-
-    logging.info("####  rebuild_packages ####\n\n")
+    """
+    This function search into every subfolder whitin 'root' folder, 
+    and if there's some .java file, it checks if the package declaration is right,
+    if not, it correct such declation by moving this file in the proper directory
+        :param root: a path in which this folder should search.
+    """
+    logging.info("\n\n####  START ----> rebuild_packages ####\n\n")
 
     to_rename = []
 
@@ -103,3 +108,5 @@ def rebuild_packages(root):
         except:
             logging.info("ERROR WHILE RENAMING => " +
                          file[0] + " IN " + file[1] + "\n")
+
+    logging.info("\n\n####  END ----> rebuild_packages ####\n\n")

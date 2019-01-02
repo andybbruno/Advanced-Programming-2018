@@ -8,7 +8,11 @@ TO_EXTEN = ".jar"
 
 
 def raj2jar(path):
-    logging.info("####  raj2jar ####\n\n")
+    """
+    Rename all files whitin the 'path' from .raj to .jar
+        :param path: a path in which the function should start renaming those .raj
+    """
+    logging.info("\n\n####  START ----> raj2jar ####\n\n")
 
     to_rename = []
 
@@ -30,7 +34,6 @@ def raj2jar(path):
 
                 to_rename.append((from_path, to_path))
 
-
     if len(to_rename) > 0:
         # for each tuple into the list "to_rename"
         for file in to_rename:
@@ -41,6 +44,8 @@ def raj2jar(path):
                     file[0] + " => SUCCESSFULLY UPDATED TO => " + file[1] + "\n")
             except:
                 logging.info("ERROR WHILE RENAMING => " +
-                            file[0] + " IN " + file[1] + "\n")
+                             file[0] + " IN " + file[1] + "\n")
     else:
         logging.info("NOTHING TO RENAME\n")
+
+    logging.info("\n\n####  END ----> raj2jar ####\n\n")
