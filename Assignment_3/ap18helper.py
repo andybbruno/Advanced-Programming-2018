@@ -2,7 +2,6 @@ from Ex1 import raj2jar
 from Ex2 import collect_sources
 from Ex3 import rebuild_packages
 from Ex4 import download_tests
-from urllib.parse import urlparse
 import os
 import requests
 
