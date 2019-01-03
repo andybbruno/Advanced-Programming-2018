@@ -5,7 +5,7 @@ import urllib.request
 import re
 
 
-# this class is used to wrap the row within the CSV
+# this class is used to wrap the rows within the CSV
 class Record:
     def __init__(self, filename,  testfiles, command):
         self.filename = filename
@@ -20,6 +20,18 @@ root = "/Users/andrea/Desktop/TEST"
 regex = r"package+.+[;]"
 
 
+def validateURL(URL):
+    """
+    This function check if an URL is correct
+        :param URL: a web address
+    """
+    res = urllib.request.urlparse(URL).scheme
+    if res == 'http':
+        pass
+    else:
+        raise Exception
+
+
 def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18/PROG-ASS/03/Test"):
     """
     Download test files for each Python, Haskell or Java file within root folder 
@@ -27,7 +39,9 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
         :param root: the folder containing those source code
         :param URL="http://pages.di.unipi.it/corradini/Didattica/AP-18/PROG-ASS/03/Test": an URL to download such test files
     """
-    logging.info("\n\n####  START ----> download_tests ####\n\n")
+
+    logging.info(
+        "============================== download_tests ==============================\n\n")
 
     test_filename = "AP_TestRegistry.csv"
     URL_file = URL + "/" + test_filename
@@ -35,6 +49,8 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
     record_list = []
 
     try:
+        validateURL(URL)
+
         # Download the csv from "URL", save it in a temporary directory and get the path to it
         file, _ = urllib.request.urlretrieve(URL_file)
 
@@ -106,7 +122,8 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
     except:
         logging.info("SOMETHING WENT WRONG!\n")
 
-    logging.info("\n\n####  END ----> download_tests ####\n\n")
+    logging.info(
+        "============================== download_tests ==============================\n\n")
 
 
 def download(URL, path):

@@ -16,9 +16,9 @@ def collect_sources(root, source):
         :param root: a path in which this function should search
         :param source: the destination path in which this function should save those results
     """
-
-    logging.info("\n\n####  START ----> collect_sources ####\n\n")
-
+    
+    logging.info("============================== collect_sources ==============================\n\n")    
+    
     try:
         # Create a list of path
         path_list = []
@@ -54,4 +54,4 @@ def collect_sources(root, source):
     except:
         logging.info("SOMETHING WENT WRONG!\n")
 
-    logging.info("\n\n####  END ----> collect_sources ####\n\n")
+    logging.info("============================== collect_sources ==============================\n\n")
