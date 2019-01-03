@@ -9,3 +9,4 @@ nbdist/
 *.mf
 *.properties
 .vscode
+__pycache__/

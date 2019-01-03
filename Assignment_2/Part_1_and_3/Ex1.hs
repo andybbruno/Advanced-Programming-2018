@@ -60,8 +60,9 @@ fromList x = LB (createLB x)
 
 
 --Check whether a ListBag is empty
-isEmpty :: Eq a => ListBag a -> Bool
-isEmpty (LB bag) = bag == []
+isEmpty :: ListBag a -> Bool
+isEmpty (LB []) = True
+isEmpty (LB bag) = False
 
 
 -- given an element 'v' and a list of tuples 'x' in this format ([(1,2),(3,1),(4,2),(8,1)])
