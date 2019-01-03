@@ -5,9 +5,6 @@ from Ex4 import download_tests
 import os
 
 
-# /Users/andrea/Desktop/TEST
-# http://pages.di.unipi.it/corradini/Didattica/AP-18/PROG-ASS/03/Test
-
 loop = True
 os.system('clear')
 
