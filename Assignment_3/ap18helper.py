@@ -7,22 +7,34 @@ import logging
 
 
 loop = True
-# root = "/Users/andrea/Desktop/final_test"
 os.system('clear')  # For Linux/OS X
 os.system('cls')  # For Windows
 
 
 def wait():
+    """
+    Pause the execution by requiring an input from the user
+    """
     print("\n\n" + "Press any key to continue...")
     input()
 
 
 def errormessage(message):
-    logging.error("\n" + 67 * "*" + "\n" + 20 * ">" + "\t" + message + "\n" + 67 * "*")
+    """
+    Given a message, this function will print the given text with some error decorations
+        :param message: a string message
+    """
+
+    logging.error("\n" + 67 * "*" + "\n" + 20 * ">" +
+                  "\t" + message + "\n" + 67 * "*")
     wait()
 
 
 def print_menu():
+    """
+    A simple menu function
+    """
+
     os.system('clear')  # For Linux/OS X
     os.system('cls')  # For Windows
     print(30 * "-", "MENU", 30 * "-")
@@ -32,6 +44,7 @@ def print_menu():
     print("4. download_tests ")
     print("\n0. Exit")
     print(67 * "-")
+
 
 if __name__ == "__main__":
     while loop:

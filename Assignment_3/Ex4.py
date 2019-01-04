@@ -18,7 +18,6 @@ class Record:
 logging.basicConfig(level=logging.INFO)
 
 URL = "http://pages.di.unipi.it/corradini/Didattica/AP-18/PROG-ASS/03/Test"
-#root = "/Users/andrea/Desktop/TEST"
 regex = r"package+.+[;]"
 
 
@@ -82,7 +81,7 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
         for record in record_list:
 
             found = False
-            
+
             # The method walk() generates the file names in a directory tree
             # by walking the tree either top-down (DEFAULT) or bottom-up.
             for subdir, dirs, files in os.walk(root):
@@ -128,12 +127,12 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
                             else:
                                 # download the test file and place it in its directory
                                 download(URL_testfile, path_testfile)
-                            
+
                         cmd_list = record.command.split(";")
                         runtest(cmd_list, cmd_dir, file)
             if not found:
                 logging.warning(40 * '>')
-                logging.warning(40 * '<'+ "\n")
+                logging.warning(40 * '<' + "\n")
                 logging.error("\t" + record.filename + " ----> NOT FOUND!!\n")
                 logging.warning(40 * '>')
                 logging.warning(40 * '<' + "\n\n")
@@ -144,11 +143,24 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
 
 
 def download(URL, path):
+    """
+    download the file in the given URL and put it into the given path
+        :param URL: an URL to download such test files
+        :param path: an aboslute path to put this file in
+    """
+
     urllib.request.urlretrieve(URL, path)
     logging.info("\nDOWNLOADED : \t" + URL + "\nIN : \t\t" + path + "\n")
 
 
-def runtest(commands, path, file):
+def runtest(commands, path, file=""):
+    """
+    Run a list tests by executing a list of command in a separate shell
+        :param commands: a list of commands
+        :param path: a path in which those commands should be run
+        :param file: used to log
+    """
+
     logging.warning("********* START TEST : " + file + " *********")
     # execute commands
     for cmd in commands:
