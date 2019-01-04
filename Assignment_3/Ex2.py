@@ -16,9 +16,9 @@ def collect_sources(root, source):
         :param root: a path in which this function should search
         :param source: the destination path in which this function should save those results
     """
-    
-    logging.info("============================== collect_sources ==============================\n\n")    
-    
+
+    logging.info(30 * '=' + " collect_sources " + 30 * '=' + "\n\n")
+
     try:
         # Create a list of path
         path_list = []
@@ -47,11 +47,11 @@ def collect_sources(root, source):
 
             # The method writelines() writes a sequence of strings to the file.
             source_file.writelines(path_list)
-            logging.info("FILE SUCCESSFULLY CREATED!\n")
+            logging.info("FILE SUCCESSFULLY CREATED!\n\n")
         else:
             logging.info(
                 "NO FILES FOUND WITH THESE EXTENSIONS " + str(EXT) + "\n")
     except:
-        logging.info("SOMETHING WENT WRONG!\n")
+        logging.error("SOMETHING WENT WRONG!\n")
 
-    logging.info("============================== collect_sources ==============================\n\n")
+    logging.info(20 * '=' + " collect_sources " + 30 * '=' + "\n\n")

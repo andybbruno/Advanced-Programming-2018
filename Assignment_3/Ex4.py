@@ -3,9 +3,11 @@ import os
 import csv
 import urllib.request
 import re
-
+from subprocess import call
 
 # this class is used to wrap the rows within the CSV
+
+
 class Record:
     def __init__(self, filename,  testfiles, command):
         self.filename = filename
@@ -16,7 +18,7 @@ class Record:
 logging.basicConfig(level=logging.INFO)
 
 URL = "http://pages.di.unipi.it/corradini/Didattica/AP-18/PROG-ASS/03/Test"
-root = "/Users/andrea/Desktop/TEST"
+#root = "/Users/andrea/Desktop/TEST"
 regex = r"package+.+[;]"
 
 
@@ -40,8 +42,7 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
         :param URL="http://pages.di.unipi.it/corradini/Didattica/AP-18/PROG-ASS/03/Test": an URL to download such test files
     """
 
-    logging.info(
-        "============================== download_tests ==============================\n\n")
+    logging.info(30 * '=' + " download_tests " + 30 * '=' + "\n\n")
 
     test_filename = "AP_TestRegistry.csv"
     URL_file = URL + "/" + test_filename
@@ -79,21 +80,22 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
 
         # for each row in the CSV
         for record in record_list:
+
+            found = False
+            
             # The method walk() generates the file names in a directory tree
             # by walking the tree either top-down (DEFAULT) or bottom-up.
             for subdir, dirs, files in os.walk(root):
                 for file in files:
                     # if there is a file called the same as the current CSV row
                     if file == record.filename:
+                        found = True
                         # for each testfile, download it and place it in the right directory
                         for test in record.testfiles:
                             URL_testfile = URL + "/" + test
                             path_testfile = subdir + "/" + test
+                            cmd_dir = subdir
 
-                            # if the current file is a Haskell or a Python script
-                            if test.endswith(".hs") or test.endswith(".py"):
-                                # download the test file and place it in its directory
-                                download(URL_testfile, path_testfile)
                             # if the current file is Java
                             if test.endswith(".java"):
                                 # open it to check if there is a package declaration
@@ -116,16 +118,39 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
                                     # correct the path, in order to put test files into the parent directory
                                     path_testfile = parent_path + "/" + test
 
+                                    # to execute tests correctly I must set 'parent_path' as the test directory
+                                    cmd_dir = parent_path
+
                                 # download the test file and place it in the correct place
                                 download(URL_testfile, path_testfile)
 
+                            # if the current file is a Haskell or a Python script or something else
+                            else:
+                                # download the test file and place it in its directory
+                                download(URL_testfile, path_testfile)
+                            
+                        cmd_list = record.command.split(";")
+                        runtest(cmd_list, cmd_dir, file)
+            if not found:
+                logging.warning(40 * '>')
+                logging.warning(40 * '<'+ "\n")
+                logging.error("\t" + record.filename + " ----> NOT FOUND!!\n")
+                logging.warning(40 * '>')
+                logging.warning(40 * '<' + "\n\n")
     except:
-        logging.info("SOMETHING WENT WRONG!\n")
+        logging.error("SOMETHING WENT WRONG!\n")
 
-    logging.info(
-        "============================== download_tests ==============================\n\n")
+    logging.info(30 * '=' + " download_tests " + 30 * '=' + "\n\n")
 
 
 def download(URL, path):
     urllib.request.urlretrieve(URL, path)
     logging.info("\nDOWNLOADED : \t" + URL + "\nIN : \t\t" + path + "\n")
+
+
+def runtest(commands, path, file):
+    logging.warning("********* START TEST : " + file + " *********")
+    # execute commands
+    for cmd in commands:
+        call(cmd, shell=True, cwd=path)
+    logging.warning("*********  END TEST : " + file + "  *********\n\n")

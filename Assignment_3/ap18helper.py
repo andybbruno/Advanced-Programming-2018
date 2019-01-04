@@ -3,10 +3,13 @@ from Ex2 import collect_sources
 from Ex3 import rebuild_packages
 from Ex4 import download_tests
 import os
+import logging
 
 
 loop = True
-os.system('clear')
+# root = "/Users/andrea/Desktop/final_test"
+os.system('clear')  # For Linux/OS X
+os.system('cls')  # For Windows
 
 
 def wait():
@@ -15,14 +18,13 @@ def wait():
 
 
 def errormessage(message):
-    print("\n\n" + 67 * "*")
-    print(20 * ">" + "\t" + message)
-    print(67 * "*")
+    logging.error("\n" + 67 * "*" + "\n" + 20 * ">" + "\t" + message + "\n" + 67 * "*")
     wait()
 
 
 def print_menu():
-    os.system('clear')
+    os.system('clear')  # For Linux/OS X
+    os.system('cls')  # For Windows
     print(30 * "-", "MENU", 30 * "-")
     print("1. raj2jar ")
     print("2. collect_sources ")

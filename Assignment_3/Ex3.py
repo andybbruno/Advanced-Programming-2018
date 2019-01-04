@@ -20,8 +20,8 @@ def rebuild_packages(root):
     if not, it correct such declation by moving this file in the proper directory
         :param root: a path in which this folder should search.
     """
-    
-    logging.info("============================== rebuild_packages ==============================\n\n")
+
+    logging.info(30 * '=' + " rebuild_packages " + 30 * '=' + "\n\n")
 
     to_rename = []
 
@@ -33,11 +33,6 @@ def rebuild_packages(root):
             if file.endswith(".java"):
                 # create the abs_path of the file
                 abs_file_path = os.path.join(subdir, file)
-
-                # find the relative path of the folder in which the file is
-                # rel_dir_path = abs_file_path.split(root + "/")[1].split("/")[0]
-
-                current_dir = subdir.split("/").pop()
 
                 try:
                     # open the file
@@ -58,13 +53,20 @@ def rebuild_packages(root):
                         # remove the semicolumn symbol
                         package_name = res.split("package ")[1].split(";")[0]
 
+                        # since in Java every dot in the package name, means a new folder
+                        # here, to obtain the right folder name, I replace the dots with '/' (if there are)
+                        pkg_dir = package_name.replace(".", "/")
+
+                        # the path in which the file should be
+                        package_path = os.path.split(subdir)[0] + "/" + pkg_dir
+
                         # if the current directory is equal to the package name
-                        if current_dir == package_name:
+                        if package_path == subdir:
                             logging.info(abs_file_path + " => NOTHING TO DO\n")
 
                         # elif there is a subdirectory called with the package name
-                        elif package_name in dirs:
-                            filename = subdir + '/' + package_name + '/' + file
+                        elif os.path.exists(root + "/" + pkg_dir):
+                            filename = root + '/' + pkg_dir + '/' + file
 
                             # I've created a list with the files to be renamed because
                             # if I create a folder at this point, the method "os.walk()" will find this
@@ -75,7 +77,7 @@ def rebuild_packages(root):
                         # otherwise try to create a new folder and move this file into the correct folder
                         else:
                             # define the new directory to be created
-                            directory = subdir + '/' + package_name
+                            directory = subdir + '/' + pkg_dir
 
                             # a safe way to create folder
                             if not os.path.exists(directory):
@@ -84,11 +86,7 @@ def rebuild_packages(root):
                             # the new path of this file
                             new_filename = directory + '/' + file
 
-                            # to move a file I simply rename the old path with
-                            # the new one just created up here.
-                            os.rename(abs_file_path, new_filename)
-                            logging.info(abs_file_path +
-                                         " => MOVED IN A NEW DIRECTORY\n")
+                            to_rename.append((abs_file_path, new_filename))
 
                     # if there isn't any match between my regex and the text
                     # it means that the java file does not contain any package declaration
@@ -96,7 +94,7 @@ def rebuild_packages(root):
                         logging.info(abs_file_path + " => NO PACKAGE FOUND\n")
 
                 except:
-                    logging.info("ERROR @ " + abs_file_path + "\n")
+                    logging.error("ERROR @ " + abs_file_path + "\n")
 
     # for each tuple into the list "to_rename"
     for file in to_rename:
@@ -107,7 +105,7 @@ def rebuild_packages(root):
             logging.info(
                 file[0] + " => CORRECTLY MOVED TO => " + file[1] + "\n")
         except:
-            logging.info("ERROR WHILE RENAMING => " +
-                         file[0] + " IN " + file[1] + "\n")
+            logging.error("ERROR WHILE RENAMING => " +
+                          file[0] + " IN " + file[1] + "\n")
 
-    logging.info("============================== rebuild_packages ==============================\n\n")
+    logging.info(30 * '=' + " rebuild_packages " + 30 * '=' + "\n\n")
