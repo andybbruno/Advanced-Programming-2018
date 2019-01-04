@@ -123,8 +123,8 @@ def download_tests(root, URL="http://pages.di.unipi.it/corradini/Didattica/AP-18
                                 # download the test file and place it in the correct place
                                 download(URL_testfile, path_testfile)
 
-                            # if the current file is a Haskell or a Python script or something else
-                            else:
+                            # if the current file is a Haskell or a Python script or something different from ''
+                            elif test:
                                 # download the test file and place it in its directory
                                 download(URL_testfile, path_testfile)
 
