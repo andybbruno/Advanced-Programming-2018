@@ -10,3 +10,7 @@ nbdist/
 *.properties
 .vscode
 __pycache__/
+Assignment_2/Part_2/.classpath
+Assignment_2/Part_2/.project
+STREAM/.classpath
+STREAM/.project
