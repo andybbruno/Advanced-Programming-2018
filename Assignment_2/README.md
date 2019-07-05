@@ -124,7 +124,9 @@ import Ex1 (
 -- Create an istance of Foldable by implementing the foldr.
 -- Basically the foldr over a ListBag is made by applying 
 -- recursively (from left to right) the function f, 
--- starting from z, at each first component of the tuples in the ListBag. 
+-- starting from z, at each first component of the tuples in the ListBag.
+-- Example:
+-- foldr (+) 0 (LB[(2,3),(4,1),(5,5)])
 instance Foldable ListBag where
    foldr f z (LB []) = z
    foldr f z (LB bag) = foldr f z (fst (unzip bag))
