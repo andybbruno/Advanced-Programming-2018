@@ -1,119 +1,93 @@
 package moisturesensor;
 
-import java.beans.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Random;
 
-/**
- * This class simulate a logic of a moisture sensor
- *
- * @author Andrea Bruno 585457
- */
-public class MoistureSensor {
+public class MoistureSensor implements Serializable {
 
-    private final int UPPER_BOUND = 100;
-    private final int LOWER_BOUND = 0;
-    private final Timer timer = new Timer();
-    private final Random random = new Random();
-
-    /**
-     * {@code changes} manage a list of listeners and dispatches
-     * {@link PropertyChangeEvent} to them.
-     */
-    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+    public final static String HUM_CHANNEL = "humidity";
+    public final static String DECR_CHANNEL = "decreasing";
 
     private boolean decreasing;
     private int currentHumidity;
+    private boolean started;
 
-    /**
-     * The default constructor initialize the sensor and activates it. Once it
-     * is active, it start "sensing" the humidity.
-     */
+    private final int LOWER_BOUND = 0;
+    private final int UPPER_BOUND = 100;
+    private final int STEP_RANGE = 30;
+
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+
+    private Timer timer = new Timer();
+
     public MoistureSensor() {
-        start();
+        setDecreasing(false);
+        setHumidity(0);
     }
 
-    /**
-     * To start sensing, it's simulated a reading by calling a scheduler who
-     * create a {@code ReadHumidity()} instance every second.
-     */
-    private void start() {
-        timer.schedule(new ReadHumidity(), 0, 1000);
+    public void start() {
+        if (!started) {
+            started = true;
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    Random rand = new Random();
+                    int tmpHumidity;
+
+                    boolean decr = rand.nextBoolean();
+                    setDecreasing(decr);
+
+                    if (decr) {
+                        tmpHumidity = Math.abs(currentHumidity - rand.nextInt(STEP_RANGE));
+                    } else {
+                        tmpHumidity = Math.min(Math.abs(currentHumidity + rand.nextInt(STEP_RANGE)), UPPER_BOUND);
+                    }
+                    setHumidity(tmpHumidity);
+
+                }
+            }, 0, 1000);
+
+        }
+
     }
 
-    /**
-     *
-     * @return current humidity value
-     */
+    public void stop() {
+        timer.cancel();
+        timer = new Timer();
+        started = false;
+    }
+
+    public boolean isStarted() {
+        return this.started;
+    }
+
+    public void setHumidity(int new_humidity) {
+        changes.firePropertyChange(HUM_CHANNEL, this.currentHumidity, new_humidity);
+        this.currentHumidity = new_humidity;
+    }
+
     public int getHumidity() {
-        return currentHumidity;
+        return this.currentHumidity;
     }
 
-    /**
-     *
-     * @return if the humidity value is decreasing
-     */
+    public void setDecreasing(boolean new_bool) {
+        changes.firePropertyChange(DECR_CHANNEL, this.decreasing, new_bool);
+        this.decreasing = new_bool;
+    }
+
     public boolean isDecreasing() {
-        return decreasing;
+        return this.decreasing;
     }
 
-    /**
-     * This method exploit a random object to simulate a "natural" environment.
-     * Moreover, whether the humidity changes, it fires a property change, in
-     * order to update the listeners that have been registered to keep track of
-     * those property
-     */
-    private void simulateHumidity() {
-
-        setDecreasing(random.nextBoolean());
-        int tmp = random.nextInt(UPPER_BOUND);
-
-        if ((decreasing) && (currentHumidity > LOWER_BOUND)) {
-            setHumidity(Math.abs((currentHumidity - tmp) % UPPER_BOUND));
-        } else if ((!decreasing) && (currentHumidity < UPPER_BOUND)) {
-            setHumidity(Math.abs((currentHumidity + tmp) % UPPER_BOUND));
-        }
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        changes.addPropertyChangeListener(propertyName, listener);
     }
 
-    public void setHumidity(int currentHumidity) {
-        changes.firePropertyChange("currentHumidity", this.currentHumidity, currentHumidity);
-        this.currentHumidity = currentHumidity;
-    }
-    
-    public void setDecreasing(boolean decreasing){
-        changes.firePropertyChange("decreasing", this.decreasing, decreasing);
-        this.decreasing = decreasing;
-    }
-
-    /**
-     * Add a {@code PropertyChangeListener} to the listener list.
-     *
-     * @param listener The {@code PropertyChangeListener} to be added
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changes.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Remove a {@code PropertyChangeListener} from the listener list.
-     *
-     * @param listener The {@code PropertyChangeListener} to be removed
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changes.removePropertyChangeListener(listener);
-    }
-
-    /**
-     * This inner class is useful to simulate the behave of a real sensor:
-     * thanks to {@code TimerTask} logic, we can let a scheduler start the
-     * method {@code run()} as it wants.
-     */
-    private class ReadHumidity extends TimerTask {
-
-        @Override
-        public void run() {
-            simulateHumidity();
-        }
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        changes.removePropertyChangeListener(propertyName, listener);
     }
 }
