@@ -11,13 +11,13 @@ public class Controller implements Serializable {
     private final int HUM_UPPER_BOUND = 90;
     private final int HUM_LOWER_BOUND = 30;
 
-    private boolean on = false;
+    private boolean on;
     private int locHumidity;
 
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     public Controller() {
-        setOn(true);
+        setOn(false);
     }
 
     public void setLocHumidity(int new_LocHumidity) {

@@ -28,6 +28,8 @@ public class DashboardFrame extends javax.swing.JFrame {
 
     private void bind() {
 
+        
+        
         moistureSensor.addPropertyChangeListener(MoistureSensor.HUM_CHANNEL, (PropertyChangeEvent evt) -> {
             int humidity = (int) evt.getNewValue();
             controller.setLocHumidity(humidity);
