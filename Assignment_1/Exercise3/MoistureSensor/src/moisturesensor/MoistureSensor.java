@@ -18,15 +18,15 @@ public class MoistureSensor implements Serializable {
 
     private final int LOWER_BOUND = 0;
     private final int UPPER_BOUND = 100;
-    private final int STEP_RANGE = 50;
+    private final int STEP_RANGE = 20;
 
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     private Timer timer = new Timer();
 
     public MoistureSensor() {
-        setDecreasing(!decreasing);
-        setHumidity(0);
+        setDecreasing(false);
+        setHumidity(50);
     }
 
     public void start() {
