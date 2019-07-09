@@ -1,108 +1,56 @@
 package controller;
 
-import java.beans.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
-/**
- * This class contains the irrigation logic. In particular, this class
- * implements {@code PropertyChangeListener} interface in order to be update if
- * any of the bounded properties update.
- *
- * @author Andrea Bruno 585457
- */
-public class Controller implements PropertyChangeListener {
+public class Controller implements Serializable {
+
+    public final static String ON_CHANNEL = "on";
 
     private final int HUM_UPPER_BOUND = 90;
     private final int HUM_LOWER_BOUND = 30;
 
-    /**
-     * {@code changes} manage a list of listeners and dispatches
-     * {@link PropertyChangeEvent} to them.
-     */
-    private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
-
     private boolean on;
     private int locHumidity;
 
-    /**
-     * Void constructor
-     */
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+
     public Controller() {
-
+        setOn(false);
     }
 
-    /**
-     * Start irrigation and fire a property change
-     */
-    private void startIrrigation() {
-        boolean old = this.on;
-        this.on = true;
-        changes.firePropertyChange("on", old, this.on);
+    public void setLocHumidity(int new_LocHumidity) {
+        if ((new_LocHumidity >= 0) && (new_LocHumidity <= 100)) {
+            this.locHumidity = new_LocHumidity;
+
+            if (new_LocHumidity <= HUM_LOWER_BOUND) {
+                setOn(true);
+            } else if (new_LocHumidity >= HUM_UPPER_BOUND) {
+                setOn(false);
+            }
+        }
     }
 
-    /**
-     * Stop irrigation and fire a property change
-     */
-    private void stopIrrigation() {
-        boolean old = this.on;
-        this.on = false;
-        changes.firePropertyChange("on", old, this.on);
+    public int getLocHumidity() {
+        return this.locHumidity;
     }
 
-    /**
-     * Actual sensor status
-     *
-     * @return if the sensor status is ON
-     */
+    public void setOn(boolean new_on) {
+        changes.firePropertyChange(ON_CHANNEL, this.on, new_on);
+        this.on = new_on;
+    }
+
     public boolean isOn() {
         return this.on;
     }
 
-    /**
-     * Add a {@code PropertyChangeListener} to the listener list.
-     *
-     * @param listener The {@code PropertyChangeListener} to be added
-     */
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changes.addPropertyChangeListener(listener);
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        changes.addPropertyChangeListener(propertyName, listener);
     }
 
-    /**
-     * Remove a {@code PropertyChangeListener} from the listener list.
-     *
-     * @param listener The {@code PropertyChangeListener} to be removed
-     */
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changes.removePropertyChangeListener(listener);
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        changes.removePropertyChangeListener(propertyName, listener);
     }
 
-    /**
-     * This method gets called when a bound property is changed.
-     *
-     * @param event this object describe the event source and the property that
-     * has changed.
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent event) {
-
-        if (event.getPropertyName().equals("currentHumidity")) {
-            int oldHum = locHumidity;
-            locHumidity = (int) event.getNewValue();
-
-            if (locHumidity < HUM_LOWER_BOUND) {
-                startIrrigation();
-            }
-            if (locHumidity > HUM_UPPER_BOUND) {
-                stopIrrigation();
-            }
-            changes.firePropertyChange("locHumidity", oldHum, locHumidity);
-        }
-
-        if (event.getPropertyName().equals("decreasing")) {
-            boolean oldVal = (boolean) event.getOldValue();
-            boolean newVal = (boolean) event.getNewValue();
-
-            changes.firePropertyChange("decreased", oldVal, newVal);
-        }
-
-    }
 }
