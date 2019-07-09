@@ -15,6 +15,8 @@ import java.beans.VetoableChangeSupport;
  * @author Andrea Bruno 585457
  */
 public class ControllerVeto extends Controller {
+    
+    public final static String ON_VETO_CHANNEL = "on_veto";
 
     private VetoableChangeSupport vetos = new VetoableChangeSupport(this);
 
@@ -25,18 +27,18 @@ public class ControllerVeto extends Controller {
     @Override
     public void setOn(boolean new_on) {
         try {
-            vetos.fireVetoableChange(ON_CHANNEL, on, new_on);
+            vetos.fireVetoableChange(ON_VETO_CHANNEL, this.on, new_on);
             super.setOn(new_on);
         } catch (PropertyVetoException e) {
             System.out.println(e);
         }
     }
 
-    public void addVetoableChangelistener(VetoableChangeListener l) {
+    public void addVetoableChangelistener(String propertyName, VetoableChangeListener l) {
         vetos.addVetoableChangeListener(l);
     }
 
-    public void removeVetoableChangelistener(VetoableChangeListener l) {
+    public void removeVetoableChangelistener(String propertyName, VetoableChangeListener l) {
         vetos.removeVetoableChangeListener(l);
     }
 }

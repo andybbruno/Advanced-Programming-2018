@@ -31,7 +31,7 @@ public class ManualDashboardFrame extends javax.swing.JFrame {
 
         moistureSensor.addPropertyChangeListener(MoistureSensor.HUM_CHANNEL, (PropertyChangeEvent evt) -> {
             int humidity = (int) evt.getNewValue();
-            //controller.setLocHumidity(humidity);
+            controllerveto.setLocHumidity(humidity);
             humidityLBL.setText("" + humidity);
         });
 
@@ -46,17 +46,20 @@ public class ManualDashboardFrame extends javax.swing.JFrame {
             moistureSensor.setDecreasing(!new_on);
         });
 
-        controllerveto.addVetoableChangelistener((PropertyChangeEvent evt) -> {
+        
+        controllerveto.addVetoableChangelistener(ControllerVeto.ON_VETO_CHANNEL, (PropertyChangeEvent evt) -> {
             boolean wantToTurnOn = (boolean) evt.getNewValue();
+            int hum = controllerveto.getLocHumidity();
             if (wantToTurnOn) {
-                if (controllerveto.getLocHumidity() > 60) {
+                if (hum > 60) {
                     throw new PropertyVetoException("Cannot turn on if humidity is more than 60%", evt);
                 }
             } else {
-                if (controllerveto.getLocHumidity() < 50) {
+                if (hum < 50) {
                     throw new PropertyVetoException("Cannot turn off if humidity is less than 50%", evt);
                 }
             }
+            System.out.println("Changed @ " + hum);
         });
 
     }
